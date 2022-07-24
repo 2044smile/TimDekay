@@ -10,7 +10,7 @@ from rest_framework.response import Response
     responses={
         200: 'OK'
     },
-    tags=['health-check']
+    tags=['HealthCheck']
 )
 @api_view(['GET'])
 def health_check(request):
