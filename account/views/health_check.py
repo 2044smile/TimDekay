@@ -14,6 +14,13 @@ from rest_framework.response import Response
 )
 @api_view(['GET'])
 def health_check(request):
+    """
+    :param request:
+    :return: health check SUCCESS
+
+    Kubernetes 를 이용하여 서버를 띄울 시 Readiness, Liveness, Startup 등을 설정해야하고,
+    Pod 에서 수시로 현재 서버가 정상적인지 Request 를 보낸다.
+    """
     response = {
         'status': 'health check SUCCESS'
     }
