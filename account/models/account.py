@@ -87,6 +87,7 @@ class Account(AbstractBaseUser, PermissionsMixin, BaseModel):
 
     class Meta:
         verbose_name = '유저'
+        verbose_name_plural = '유저들'  # verbose_name_plural Permission(models.Model)
         ordering = ['-created_at']
 
     def __str__(self):
