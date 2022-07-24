@@ -1,10 +1,11 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from django.contrib.auth.models import User
+
+from account.models.account import Account
 
 
-class UserAdmin(BaseUserAdmin):
+class AccountAdmin(admin.ModelAdmin):
     pass
 
 
-admin.site.register(User, UserAdmin)
+admin.site.register(Account, AccountAdmin)
