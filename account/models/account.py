@@ -6,14 +6,15 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, nickname, real_name, password):  # real_name null=True
+    def create_user(self, email, nickname, real_name, phone, password):  # real_name null=True
         if not email:
             raise ValueError('Users must have an email address')
 
         user = self.model(
             email=UserManager.normalize_email(email),
             nickname=nickname,
-            real_name=real_name  # 이름
+            real_name=real_name,  # 이름
+            phone=phone,
         )
         user.set_password(password)
         user.save(using=self._db)
