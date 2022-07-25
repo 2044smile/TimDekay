@@ -5,7 +5,7 @@ from account.models.account import Account
 
 
 class AccountAdmin(admin.ModelAdmin):
-    pass
+    list_display = ['email', 'phone']
 
 
 admin.site.register(Account, AccountAdmin)

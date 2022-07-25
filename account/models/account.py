@@ -1,8 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin
-from django.contrib.auth.hashers import make_password
 
 from account.models import BaseModel
+from phonenumber_field.modelfields import PhoneNumberField
 
 
 class UserManager(BaseUserManager):
@@ -20,7 +20,7 @@ class UserManager(BaseUserManager):
 
         return user
 
-    def create_superuser(self, email, nickname, password):
+    def create_superuser(self, email, nickname, password, phone=None):
         user = self.model(
             email=email,
             nickname=nickname,
@@ -48,6 +48,10 @@ class Account(AbstractBaseUser, PermissionsMixin, BaseModel):
         max_length=16,
         blank=True,
         null=True
+    )
+    phone = PhoneNumberField(
+        blank=False,
+        unique=True,
     )
     is_active = models.BooleanField(default=True)
     is_certified = models.BooleanField(default=False)
