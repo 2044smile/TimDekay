@@ -1,12 +1,13 @@
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin
+from django.core.cache import cache
 
 from account.models import BaseModel
 from phonenumber_field.modelfields import PhoneNumberField
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, nickname, real_name, phone, password):  # real_name null=True
+    def create_user(self, email, nickname, real_name, password, phone=None):  # real_name null=True
         if not email:
             raise ValueError('Users must have an email address')
 
@@ -14,7 +15,7 @@ class UserManager(BaseUserManager):
             email=UserManager.normalize_email(email),
             nickname=nickname,
             real_name=real_name,  # 이름
-            phone=phone,
+            # phone=phone,
         )
         user.set_password(password)
         user.save(using=self._db)
@@ -51,8 +52,8 @@ class Account(AbstractBaseUser, PermissionsMixin, BaseModel):
         null=True
     )
     phone = PhoneNumberField(
-        blank=False,
-        unique=True,
+        blank=True,
+        null=True,
     )
     is_active = models.BooleanField(default=True)
     is_certified = models.BooleanField(default=False)

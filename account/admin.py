@@ -5,7 +5,7 @@ from account.models.account import Account
 
 
 class AccountAdmin(admin.ModelAdmin):
-    list_display = ['email', 'phone']
+    list_display = ['email', 'phone', 'is_active', 'is_certified', 'is_admin']
 
 
 admin.site.register(Account, AccountAdmin)

@@ -3,6 +3,7 @@ from django.utils.decorators import method_decorator
 from rest_framework import viewsets, permissions, mixins
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from django.core.cache import cache
 
 from account.models.account import Account, UserManager
 from account.serializers.account import AccountSignUpSerializer, AccountPhoneNumberSerializer
@@ -23,6 +24,16 @@ class AccountSignUpViewSet(mixins.CreateModelMixin,
         if self.action == 'create':
             return AccountSignUpSerializer
 
+    def create(self, request, *args, **kwargs):
+        if not cache.get('phone'):
+            raise ValueError("No cache found")
+        else:
+            validate_phone = cache.get('phone')
+        # queryset = Account.objects.create_user(
+        #     email=request['data'],
+        #     password=request
+        # )
+
 
 @swagger_auto_schema(
     method='post',
@@ -37,5 +48,9 @@ class AccountSignUpViewSet(mixins.CreateModelMixin,
 def account_phone(request):
     serializer = AccountPhoneNumberSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
+
+    validate_phone = serializer.data['phone']
+    cache.set('phone', validate_phone, timeout=180)
+    print(cache.get('phone'))
 
     return Response(serializer.data)
