@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 
     'drf_yasg',
     'rest_framework',
+    'phonenumber_field',
 
     'account',
 ]
