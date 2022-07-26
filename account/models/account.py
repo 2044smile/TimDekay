@@ -10,14 +10,17 @@ class UserManager(BaseUserManager):
     def create_user(self, email, nickname, real_name, password, phone=None):  # real_name null=True
         if not email:
             raise ValueError('Users must have an email address')
+        if not cache.get('phone'):
+            raise ValueError('Users must have an phone')
 
         user = self.model(
             email=UserManager.normalize_email(email),
             nickname=nickname,
             real_name=real_name,  # 이름
-            # phone=phone,
+            phone=cache.get('phone'),
         )
         user.set_password(password)
+        user.is_certified = True
         user.save(using=self._db)
 
         return user
@@ -52,8 +55,10 @@ class Account(AbstractBaseUser, PermissionsMixin, BaseModel):
         null=True
     )
     phone = PhoneNumberField(
-        blank=True,
-        null=True,
+        max_length=13,
+        blank=False,
+        unique=True,
+        verbose_name='전화번호'
     )
     is_active = models.BooleanField(default=True)
     is_certified = models.BooleanField(default=False)
