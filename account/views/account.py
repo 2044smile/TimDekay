@@ -26,13 +26,20 @@ class AccountSignUpViewSet(mixins.CreateModelMixin,
 
     def create(self, request, *args, **kwargs):
         if not cache.get('phone'):
-            raise ValueError("No cache found")
+            raise ValueError("not have cache data")
         else:
             validate_phone = cache.get('phone')
-        # queryset = Account.objects.create_user(
-        #     email=request['data'],
-        #     password=request
-        # )
+            try:
+                queryset = Account.objects.create_user(
+                    email=request.data['email'],
+                    password=request.data['password'],
+                    nickname=request.data['nickname'],
+                    real_name=request.data['real_name'],
+                    phone=validate_phone
+                )
+            except ValueError:
+                raise ValueError('폰 번호가 중복되었거나, 닉네임이 중복되었거나, 이메일이 중복 된 경우')
+            return Response({"data": "data"})  # FIXME: Here
 
 
 @swagger_auto_schema(
@@ -51,6 +58,5 @@ def account_phone(request):
 
     validate_phone = serializer.data['phone']
     cache.set('phone', validate_phone, timeout=180)
-    print(cache.get('phone'))
 
     return Response(serializer.data)
