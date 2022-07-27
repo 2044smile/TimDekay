@@ -39,7 +39,10 @@ class AccountSignUpViewSet(mixins.CreateModelMixin,
                 )
             except ValueError:
                 raise ValueError('폰 번호가 중복되었거나, 닉네임이 중복되었거나, 이메일이 중복 된 경우')
-            return Response({"data": "data"})  # FIXME: Here
+
+            serializer = AccountSignUpSerializer(queryset)
+
+            return Response(data=serializer.data)
 
 
 @swagger_auto_schema(
