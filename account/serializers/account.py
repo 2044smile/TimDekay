@@ -24,3 +24,28 @@ class AccountPhoneNumberSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             "phone": {"required": True},
         }
+
+
+class AccountLoginSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Account
+        fields = ['email', 'password']
+        extra_kwargs = {
+            "email": {"required": True},
+            "password": {"write_only": True, "required": True},
+        }
+
+
+class AccountInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Account
+        fields = '__all__'
+        extra_kwargs = {
+            "password": {"write_only": True},
+        }
+
+
+class PasswordResetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Account
+        fields = ['pk', 'password']
