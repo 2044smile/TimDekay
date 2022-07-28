@@ -134,6 +134,7 @@ class PasswordResetView(UpdateAPIView):
     # 정상작동 한다.
     # 앞에서 authenticate 설명했듯이 로그인에서 패스워드 비교하는 문제는 찾아볼 수 없지만,
     # 패스워드 변경에 대해서는 잘 작동하는 것을 확인할 수 있다.
+    # 추가로 account/login 에서 확인하면 패스워드가 틀려도 액세스, 리프레시 토큰을 주니 jwt-token-auth 에서 하기 바란다.
     queryset = Account.objects.all()
     serializer_class = PasswordResetSerializer
     permission_classes = (permissions.IsAuthenticated, )
