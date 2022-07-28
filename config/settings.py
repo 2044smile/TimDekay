@@ -29,6 +29,10 @@ ALLOWED_HOSTS = []
 
 AUTH_USER_MODEL = 'account.Account'
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend'
+]
+
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
@@ -72,7 +76,9 @@ SWAGGER_SETTINGS = {
     }
 }
 
-
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
 # Application definition
 
 INSTALLED_APPS = [
