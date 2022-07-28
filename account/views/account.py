@@ -68,6 +68,7 @@ def account_phone(request):
     serializer.is_valid(raise_exception=True)
 
     validate_phone = serializer.data['phone']
+    # 전화번호 인증은 redis 로 실시하였다.
     cache.set('phone', validate_phone, timeout=180)
 
     return Response(serializer.data)
