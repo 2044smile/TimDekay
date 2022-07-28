@@ -5,8 +5,10 @@
 ## 사용한 기술
 ### redis
 #### redis를 사용하기 위해서는 redis와 django-redis를 설치하셔야 합니다.
-#### brew install redis -> redis-server
-#### https://github.com/jazzband/django-redis/tags
+1. brew install redis 
+2. redis-server
+3. https://github.com/jazzband/django-redis/tags
+4. pip install django-redis
 
 ## 실행 방법
 1. redis를 설치하셨다면 'redis-server'
@@ -20,5 +22,5 @@
 2. account/create 회원가입 (정상 작동)
 3. account/login 로그인 --> access, refresh token 생성 **AccessToken 복사**
  로그인 authenticate가 안되는 문제가 발생 comment 를 확인 (문제 발생)
-4. account/info/{id} 내정보 --> id는 1을 입력, 자물쇠 버튼을 눌러 JWT (AccessToken) 입력 (정상 작동)
+4. account/info/{id} 내정보 --> id는 1을 입력, Swagger 자물쇠 버튼을 눌러 JWT (AccessToken) 입력 (정상 작동)
 5. account/password/reset/{id} --> id는 1을 입력, 변경하고 싶은 패스워드 입력 (정상 작동)
