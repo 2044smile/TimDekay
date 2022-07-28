@@ -4,6 +4,7 @@ from account.models import Account
 from phonenumber_field.serializerfields import PhoneNumberField
 
 
+# Model Serialzier 는 수치상으로 매우 느린 편에 속하지만, 개인 프로젝트의 경우엔 신경 쓸 필요 없으므로 그냥 사용하였습니다. 참고용
 class AccountSignUpSerializer(serializers.ModelSerializer):
     class Meta:
         model = Account
