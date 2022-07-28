@@ -4,6 +4,7 @@ from django.core.cache import cache
 
 from account.models import BaseModel
 from phonenumber_field.modelfields import PhoneNumberField
+import random
 
 
 class UserManager(BaseUserManager):
@@ -25,13 +26,15 @@ class UserManager(BaseUserManager):
 
         return user
 
-    def create_superuser(self, email, nickname, password, phone=None):
+    def create_superuser(self, email, nickname, password):
         user = self.model(
             email=email,
             nickname=nickname,
         )
         user.set_password(password)
         user.is_admin = True
+        lst = random.sample(range(1, 55), 5)  # I don't know create_superuser
+        user.phone = "+" + str(lst)
         user.save(using=self._db)
 
         return user
@@ -58,7 +61,7 @@ class Account(AbstractBaseUser, PermissionsMixin, BaseModel):
         max_length=13,
         blank=False,
         unique=True,
-        verbose_name='전화번호'
+        verbose_name='전화 번호'
     )
     is_active = models.BooleanField(default=True)
     is_certified = models.BooleanField(default=False)
