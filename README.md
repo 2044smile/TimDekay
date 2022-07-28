@@ -20,7 +20,15 @@
 ## 진행 순서
 1. account/phone 휴대폰 인증 (정상 작동)
 2. account/create 회원가입 (정상 작동)
-3. account/login 로그인 --> access, refresh token 생성 **AccessToken 복사**
- 로그인 authenticate가 안되는 문제가 발생 comment 를 확인 (문제 발생)
+3. <span style="color:red">account/login 로그인 --> access, refresh token 생성 **AccessToken 복사**
+ 로그인 authenticate가 안되는 문제가 발생 comment 를 확인 (문제 발생)</span>
 4. account/info/{id} 내정보 --> id는 1을 입력, Swagger 자물쇠 버튼을 눌러 JWT (AccessToken) 입력 (정상 작동)
 5. account/password/reset/{id} --> id는 1을 입력, 변경하고 싶은 패스워드 입력 (정상 작동)
+
+## 앞으로의 진행 사항
+
+1. 할 수 있다
+2. 할 수 있다
+3. 할 수 있다
+4. 할 수 있다
+5. 할 수 있다
