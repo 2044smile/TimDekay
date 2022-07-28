@@ -20,6 +20,8 @@ def health_check(request):
 
     Kubernetes 를 이용하여 서버를 띄울 시 Readiness, Liveness, Startup 등을 설정해야하고,
     Pod 에서 수시로 현재 서버가 정상적인지 Request 를 보낸다.
+
+    기본적으로 하나 있으면 여러 방면에 사용 할 수 있음을 강조
     """
     response = {
         'status': 'health check SUCCESS'
