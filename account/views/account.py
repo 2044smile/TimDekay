@@ -1,12 +1,19 @@
+from django.contrib.auth import authenticate
 from drf_yasg.utils import swagger_auto_schema
 from django.utils.decorators import method_decorator
-from rest_framework import viewsets, permissions, mixins
-from rest_framework.decorators import api_view
+from rest_framework import viewsets, mixins
+from rest_framework.generics import UpdateAPIView
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from django.core.cache import cache
+from rest_framework.views import APIView
+from rest_framework.decorators import api_view
+from rest_framework import permissions
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from account.models.account import Account, UserManager
-from account.serializers.account import AccountSignUpSerializer, AccountPhoneNumberSerializer
+from account.serializers.account import AccountSignUpSerializer, AccountPhoneNumberSerializer, AccountLoginSerializer, \
+    AccountInfoSerializer, PasswordResetSerializer
 
 
 @method_decorator(name='create', decorator=swagger_auto_schema(
@@ -63,3 +70,70 @@ def account_phone(request):
     cache.set('phone', validate_phone, timeout=180)
 
     return Response(serializer.data)
+
+
+class AccountLoginView(APIView):
+    permission_classes = (permissions.AllowAny, )
+
+    @swagger_auto_schema(
+        operation_id="로그인",
+        request_body=AccountLoginSerializer,
+        tags=['Account'],
+    )
+    def post(self, request):
+        user = Account.objects.get(email=request.data['email'])  # 이메일이 없으면 알아서 에러 발생
+
+        token = TokenObtainPairSerializer.get_token(user)
+        refresh_token = str(token)
+        access_token = str(token.access_token)
+
+        res = Response(
+            {
+                "user": user.email,
+                "message": "login success",
+                "token": {
+                    "access": access_token,
+                    "refresh": refresh_token,
+                },
+            },
+        )
+        return res
+
+
+class AccountInfoView(APIView):
+    permission_classes = (permissions.IsAuthenticated, )
+
+    @swagger_auto_schema(
+        operation_id="내정보",
+        request_query=AccountInfoSerializer,
+        tags=['Account'],
+    )
+    def get(self, request, pk):
+        instance = Account.objects.get(pk=pk)
+        serializer = AccountInfoSerializer(instance)
+        data = serializer.data
+
+        return Response(data)
+
+
+class PasswordResetView(UpdateAPIView):
+    queryset = Account.objects.all()
+    serializer_class = PasswordResetSerializer
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def get_object(self, pk):
+        try:
+            return Account.objects.get(pk=pk)
+        except Exception as e:
+            return Response({'message': e})
+
+    def put(self, request, pk):
+        user = self.get_object(pk)
+        serializer = self.serializer_class(user, data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            user.set_password(serializer.data.get('password'))
+            user.save()
+            return Response(serializer.data)
+        return Response({'message': True})
