@@ -10,6 +10,7 @@ from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from rest_framework import permissions
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from django.shortcuts import get_object_or_404
 
 from account.models.account import Account, UserManager
 from account.serializers.account import AccountSignUpSerializer, AccountPhoneNumberSerializer, AccountLoginSerializer, \
@@ -81,7 +82,19 @@ class AccountLoginView(APIView):
         tags=['Account'],
     )
     def post(self, request):
-        user = Account.objects.get(email=request.data['email'])  # 이메일이 없으면 알아서 에러 발생
+        try:
+            # Account.objects.get(email=request.data['email']).password -> sha256한 값이 나온다.
+            # authenticate 는 사용자 인증을 담당한다. 사용자명과 비밀번호가 정확한지 확인한다.
+            # authenticate(email=request.data['email'], password=request.data['password']) 가 되야하지만
+            # 나는 Email 로 로그인 기능 구현하기를 설정했지만 바뀌는 점은 없었다.
+            # 올바른 패스워드를 입력하기 바란다.
+            print(request.data['email'])
+            print(request.data['password'])
+            print(authenticate(email=request.data['email'], password=request.data['password']))  # None
+            # user = authenticate(email=request.data['email'], password=request.data['password'])
+            user = Account.objects.get(email=request.data['email'])
+        except Account.DoesNotExist:
+            user = None
 
         token = TokenObtainPairSerializer.get_token(user)
         refresh_token = str(token)
