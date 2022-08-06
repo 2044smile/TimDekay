@@ -4,7 +4,7 @@
 
 ## 사용한 기술
 ### redis
-#### redis를 사용하기 위해서는 redis와 django-redis를 설치하셔야 합니다.
+#### Mac OS
 1. brew install redis 
 2. redis-server
 3. https://github.com/jazzband/django-redis/tags
