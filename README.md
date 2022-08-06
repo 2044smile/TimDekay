@@ -10,6 +10,8 @@
 3. https://github.com/jazzband/django-redis/tags
 4. pip install django-redis
 
+1. sudo apt install redis
+
 ## 실행 방법
 1. redis를 설치하셨다면 'redis-server'
 2. python manage.py makemigrations
