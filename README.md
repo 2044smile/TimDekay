@@ -11,6 +11,7 @@
 4. pip install django-redis
 Window Ubuntu
 1. sudo apt install redis
+2. sudo service redis-server start
 
 ## 실행 방법
 1. redis를 설치하셨다면 'redis-server'
