@@ -9,7 +9,7 @@
 2. redis-server
 3. https://github.com/jazzband/django-redis/tags
 4. pip install django-redis
-
+Window Ubuntu
 1. sudo apt install redis
 
 ## 실행 방법
